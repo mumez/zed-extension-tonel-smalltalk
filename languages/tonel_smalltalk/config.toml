@@ -1,0 +1,4 @@
+name = "Tonel Smalltalk"
+grammar = "tonel_smalltalk"
+path_suffixes = ["st"]
+line_comments = ['"']

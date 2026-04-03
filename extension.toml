@@ -1,0 +1,15 @@
+id = "tonel-smalltalk"
+name = "Tonel Smalltalk"
+version = "0.1.0"
+schema_version = 1
+authors = ["mumez"]
+description = "Tonel Smalltalk language support for Zed: syntax highlighting and go-to-definition"
+repository = "https://github.com/mumez/zed-extension-tonel-smalltalk"
+
+[grammars.tonel_smalltalk]
+repository = "https://github.com/mumez/tree-sitter-tonel-smalltalk"
+commit = "e20d0613f18a898cbdd353a801f283707c62567e"
+
+[language_servers.tonel-smalltalk-language-server]
+name = "tonel-smalltalk-language-server"
+language = "Tonel Smalltalk"
