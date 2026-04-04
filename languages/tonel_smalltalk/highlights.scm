@@ -29,13 +29,8 @@
 (class_comment) @comment
 (comment) @comment
 
-; Pseudo-variables / built-ins
-(true) @constant.builtin
-(false) @constant.builtin
-(nil) @constant.builtin
-(self) @variable.builtin
-(super) @variable.builtin
-(thisContext) @variable.builtin
+; Pseudo-variables
+[(self) (super) (true) (false) (nil) (thisContext)] @variable.builtin
 
 ; Return operator
 "^" @operator
@@ -47,7 +42,10 @@
 "." @punctuation.delimiter
 
 ; Blocks and collections
-["[" "]" "(" ")" "{" "}"] @punctuation.bracket
+(method_definition "[" @punctuation.bracket "]" @punctuation.bracket)
+(ston_list "[" @punctuation.bracket "]" @punctuation.bracket)
+(block "[" @punctuation.special "]" @punctuation.special)
+["(" ")" "{" "}"] @punctuation.bracket
 
 ; Pragma
 ["<" ">"] @punctuation.bracket
