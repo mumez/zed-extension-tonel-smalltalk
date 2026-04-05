@@ -29,8 +29,13 @@
 (class_comment) @comment
 (comment) @comment
 
-; Pseudo-variables
-[(self) (super) (true) (false) (nil) (thisContext)] @variable.builtin
+; Pseudo-variables — self/super use @variable.special like TypeScript/JavaScript
+; (this/super); fallback left captures if the theme lacks @variable.special
+(self) @variable.builtin @variable.special
+(super) @variable.builtin @variable.special
+[(true) (false)] @boolean
+(nil) @variable.builtin @constant.builtin
+(thisContext) @variable.builtin @variable.special
 
 ; Return operator
 "^" @operator
