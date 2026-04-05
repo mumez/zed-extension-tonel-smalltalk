@@ -2,3 +2,8 @@ name = "Tonel Smalltalk"
 grammar = "tonel_smalltalk"
 path_suffixes = ["st"]
 line_comments = ['"']
+brackets = [
+    { start = "{", end = "}", close = true, newline = true },
+    { start = "(", end = ")", close = true, newline = true },
+    { start = "[", end = "]", close = true, newline = true },
+]

@@ -8,6 +8,11 @@
 (method_reference class_name: (identifier) @type)
 (method_reference ">>" @operator)
 
+; Class / global names in method bodies (and elsewhere): leading uppercase, Pharo style.
+; Does not match unary/binary selectors (those use unary_identifier / operators).
+((identifier) @type
+  (#match? @type "^[A-Z]"))
+
 ; Selectors
 (unary_selector (unary_identifier) @function.method)
 (binary_selector (binary_operator) @operator)
@@ -29,8 +34,13 @@
 (class_comment) @comment
 (comment) @comment
 
-; Pseudo-variables
-[(self) (super) (true) (false) (nil) (thisContext)] @variable.builtin
+; Pseudo-variables — self/super use @variable.special like TypeScript/JavaScript
+; (this/super); fallback left captures if the theme lacks @variable.special
+(self) @variable.builtin @variable.special
+(super) @variable.builtin @variable.special
+[(true) (false)] @boolean
+(nil) @variable.builtin @constant.builtin
+(thisContext) @variable.builtin @variable.special
 
 ; Return operator
 "^" @operator
