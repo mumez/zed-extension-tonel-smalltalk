@@ -8,6 +8,11 @@
 (method_reference class_name: (identifier) @type)
 (method_reference ">>" @operator)
 
+; Class / global names in method bodies (and elsewhere): leading uppercase, Pharo style.
+; Does not match unary/binary selectors (those use unary_identifier / operators).
+((identifier) @type
+  (#match? @type "^[A-Z]"))
+
 ; Selectors
 (unary_selector (unary_identifier) @function.method)
 (binary_selector (binary_operator) @operator)
