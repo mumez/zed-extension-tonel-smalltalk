@@ -11,12 +11,22 @@ const LSP_REPOSITORY: &str = "mumez/tonel-smalltalk-language-server";
 struct TonelSmalltalkExtension;
 
 impl TonelSmalltalkExtension {
-    fn installed_binary_path(&self, os: Os) -> &'static str {
-        if os == Os::Windows {
-            "bin/tonel-smalltalk-language-server.exe"
+    fn installed_binary_path(&self, os: Os, arch: Architecture) -> String {
+        let triple = match (os, arch) {
+            (Os::Mac, Architecture::Aarch64) => "aarch64-apple-darwin",
+            (Os::Mac, Architecture::X8664) => "x86_64-apple-darwin",
+            (Os::Linux, Architecture::Aarch64) => "aarch64-unknown-linux-gnu",
+            (Os::Linux, Architecture::X8664) => "x86_64-unknown-linux-gnu",
+            (Os::Windows, Architecture::Aarch64) => "aarch64-pc-windows-msvc",
+            (Os::Windows, Architecture::X8664) => "x86_64-pc-windows-msvc",
+            _ => "unknown",
+        };
+        let exe = if os == Os::Windows {
+            "tonel-smalltalk-language-server.exe"
         } else {
-            "bin/tonel-smalltalk-language-server"
-        }
+            "tonel-smalltalk-language-server"
+        };
+        format!("bin/tonel-smalltalk-language-server-{triple}/{exe}")
     }
 
     fn release_asset_spec(
@@ -55,10 +65,10 @@ impl TonelSmalltalkExtension {
 
     fn auto_installed_binary(&self, language_server_id: &zed::LanguageServerId) -> Result<String> {
         let (os, arch) = zed::current_platform();
-        let binary_path = self.installed_binary_path(os);
+        let binary_path = self.installed_binary_path(os, arch);
 
-        if fs::metadata(binary_path).map_or(false, |stat| stat.is_file()) {
-            return Ok(binary_path.to_string());
+        if fs::metadata(&binary_path).map_or(false, |stat| stat.is_file()) {
+            return Ok(binary_path);
         }
 
         zed::set_language_server_installation_status(
@@ -93,14 +103,14 @@ impl TonelSmalltalkExtension {
         zed::download_file(&asset.download_url, "bin", asset_type)?;
 
         if os != Os::Windows {
-            zed::make_file_executable(binary_path)?;
+            zed::make_file_executable(&binary_path)?;
         }
 
-        if !fs::metadata(binary_path).map_or(false, |stat| stat.is_file()) {
+        if !fs::metadata(&binary_path).map_or(false, |stat| stat.is_file()) {
             return Err(format!("downloaded asset was not written to {binary_path}"));
         }
 
-        Ok(binary_path.to_string())
+        Ok(binary_path)
     }
 }
 
