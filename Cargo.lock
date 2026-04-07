@@ -534,7 +534,7 @@ dependencies = [
 
 [[package]]
 name = "tonel-smalltalk-extension"
-version = "0.1.5"
+version = "0.1.6"
 dependencies = [
  "zed_extension_api",
 ]
