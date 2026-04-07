@@ -1,6 +1,6 @@
 id = "tonel-smalltalk"
 name = "Tonel Smalltalk"
-version = "0.1.5"
+version = "0.1.6"
 schema_version = 1
 authors = ["mumez"]
 description = "Tonel Smalltalk language support for Zed: syntax highlighting and go-to-definition"
