@@ -2,8 +2,8 @@ id = "tonel-smalltalk"
 name = "Tonel Smalltalk"
 version = "0.1.7"
 schema_version = 1
-authors = ["mumez"]
-description = "Tonel Smalltalk language support for Zed: syntax highlighting and go-to-definition"
+authors = ["Masashi Umezawa <ume@softumeya.com>"]
+description = "Tonel Smalltalk language support."
 repository = "https://github.com/mumez/zed-extension-tonel-smalltalk"
 
 [grammars.tonel_smalltalk]
