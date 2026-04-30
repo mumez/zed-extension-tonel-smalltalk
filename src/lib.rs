@@ -1,12 +1,17 @@
 use std::{env, fs};
 
 use zed_extension_api::{
-    self as zed, Architecture, DownloadedFileType, GithubReleaseOptions, LanguageServerId, Os,
-    Result,
+    self as zed, settings::LspSettings, Architecture, DownloadedFileType, GithubReleaseOptions,
+    LanguageServerId, Os, Result,
 };
 
 const SERVER_NAME: &str = "tonel-smalltalk-language-server";
 const LSP_REPOSITORY: &str = "mumez/tonel-smalltalk-language-server";
+
+struct LspBinary {
+    path: String,
+    args: Option<Vec<String>>,
+}
 
 struct TonelSmalltalkExtension;
 
@@ -61,6 +66,34 @@ impl TonelSmalltalkExtension {
             )),
             _ => Err("current platform is not supported by tonel-smalltalk releases".to_string()),
         }
+    }
+
+    fn language_server_binary(
+        &mut self,
+        language_server_id: &zed::LanguageServerId,
+        worktree: &zed::Worktree,
+    ) -> Result<LspBinary> {
+        let binary_settings = LspSettings::for_worktree(SERVER_NAME, worktree)
+            .ok()
+            .and_then(|lsp_settings| lsp_settings.binary);
+        let binary_args = binary_settings
+            .as_ref()
+            .and_then(|s| s.arguments.clone());
+
+        if let Some(path) = binary_settings.and_then(|s| s.path) {
+            return Ok(LspBinary { path, args: binary_args });
+        }
+
+        if let Some(path) = worktree.which(SERVER_NAME) {
+            return Ok(LspBinary { path, args: binary_args });
+        }
+
+        let path = env::current_dir()
+            .unwrap()
+            .join(self.auto_installed_binary(language_server_id)?)
+            .to_string_lossy()
+            .to_string();
+        Ok(LspBinary { path, args: binary_args })
     }
 
     fn auto_installed_binary(&self, language_server_id: &zed::LanguageServerId) -> Result<String> {
@@ -124,19 +157,11 @@ impl zed::Extension for TonelSmalltalkExtension {
         language_server_id: &LanguageServerId,
         worktree: &zed::Worktree,
     ) -> Result<zed::Command> {
-        let binary = if let Some(binary) = worktree.which(SERVER_NAME) {
-            binary
-        } else {
-            env::current_dir()
-                .unwrap()
-                .join(self.auto_installed_binary(language_server_id)?)
-                .to_string_lossy()
-                .to_string()
-        };
+        let binary = self.language_server_binary(language_server_id, worktree)?;
 
         Ok(zed::Command {
-            command: binary,
-            args: vec![],
+            command: binary.path,
+            args: binary.args.unwrap_or_default(),
             env: Default::default(),
         })
     }
