@@ -33,6 +33,23 @@ macOS/Linux assets use `.tar.gz`; Windows assets use `.zip`.
 
 If the asset for your platform is missing from the latest release, Zed will show an installation error.
 
+### Specifying the binary path explicitly
+
+As an alternative to the automatic resolution above, you can point directly to a `tonel-smalltalk-language-server` binary in your Zed `settings.json`. Download a binary for your platform from the [releases page](https://github.com/mumez/tonel-smalltalk-language-server/releases) and configure its path, for example on Windows:
+
+```json
+{
+  "lsp": {
+    "tonel-smalltalk-language-server": {
+      "binary": {
+        "path": "C:\\Users\\someone\\bin\\tonel-smalltalk-language-server.exe",
+        "arguments": [],
+      },
+    },
+  }
+}
+```
+
 ## Development
 
 Build extension wasm:
