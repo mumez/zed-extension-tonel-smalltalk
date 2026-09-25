@@ -1,6 +1,6 @@
 id = "tonel-smalltalk"
 name = "Tonel Smalltalk"
-version = "0.2.0"
+version = "0.3.0"
 schema_version = 1
 authors = ["Masashi Umezawa <ume@softumeya.com>"]
 description = "Tonel Smalltalk language support."
@@ -8,7 +8,7 @@ repository = "https://github.com/mumez/zed-extension-tonel-smalltalk"
 
 [grammars.tonel_smalltalk]
 repository = "https://github.com/mumez/tree-sitter-tonel-smalltalk"
-commit = "f44141b81c6ef5ebd14ddc4772bfd8620a8e1e19"
+commit = "bf7b534f559237aa098fb08985c3ad3259ad5878"
 
 [language_servers.tonel-smalltalk-language-server]
 name = "tonel-smalltalk-language-server"

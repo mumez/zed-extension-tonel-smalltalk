@@ -55,7 +55,6 @@ As an alternative to the automatic resolution above, you can point directly to a
 Build extension wasm:
 
 ```bash
-cd extension
 cargo check
 ```
 
